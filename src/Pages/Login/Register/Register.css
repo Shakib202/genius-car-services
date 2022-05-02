@@ -1,6 +1,16 @@
 .register-form {
   margin: 0 auto;
-  width: 25%;
+  width: 70%;
+}
+@media screen and (max-width:500px) {
+  .register-form{
+    width: 75%;
+  }
+}
+@media screen and (max-width:988px) {
+  .register-form{
+    width: 90%;
+  }
 }
 .register-form input:not([type="checkbox"]) {
   display: block;
