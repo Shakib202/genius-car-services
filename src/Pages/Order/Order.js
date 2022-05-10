@@ -1,9 +1,9 @@
-import { signOut } from 'firebase/auth';
-import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
-import axiosPrivate from '../../api/axiosPrivate';
-import auth from '../../firebase.init';
+import { signOut } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
+import axiosPrivate from "../../api/axiosPrivate";
+import auth from "../../firebase.init";
 
 const Order = () => {
   const [user] = useAuthState(auth);
@@ -13,25 +13,33 @@ const Order = () => {
   useEffect(() => {
     const getOrders = async () => {
       const email = user.email;
-      const url = `http://localhost:5000/order?email=${email}`;
-      try{
-        const {data} = await axiosPrivate.get(url);
+      const url = `https://nameless-falls-64465.herokuapp.com/order?email=${email}`;
+      try {
+        const { data } = await axiosPrivate.get(url);
         setOrders(data);
-      }
-      catch(error){
+      } catch (error) {
         console.log(error.message);
-        if(error.response.status === 401 || error.response.status === 403){
+        if (error.response.status === 401 || error.response.status === 403) {
           signOut(auth);
-          navigate('/login');
+          navigate("/login");
         }
       }
-    }
+    };
     getOrders();
-  },[user])
+  }, [user]);
 
   return (
     <div>
-      <h2 className='text-center text-primary mt-5'>Your Orders: {orders.length}</h2>
+      <h2 className="text-center mt-5 text-primary">
+        Your Orders: {orders.length}
+      </h2>
+      <div className="text-center mt-5 text-primary">
+        {
+          orders.map(order => <div key={order._id}>
+            <p className="h5">{order.email} : {order.service}</p>
+          </div>)
+        }
+      </div>
     </div>
   );
 };
