@@ -31,8 +31,8 @@ const Login = () => {
     const password = passwordRef.current.value;
 
     await signInWithEmailAndPassword(email, password);
-    const {data} = await axios.post('http://localhost:5000/login', {email});
-    localStorage.setItem('accessToken', data.accessToken);
+    const { data } = await axios.post("http://localhost:5000/login", { email });
+    localStorage.setItem("accessToken", data.accessToken);
     navigate(from, { replace: true });
   };
 
@@ -59,9 +59,8 @@ const Login = () => {
     if (email) {
       await sendPasswordResetEmail(email);
       toast("Sent email");
-    }
-    else{
-      toast('please enter your email address');
+    } else {
+      toast("please enter your email address");
     }
   };
 
