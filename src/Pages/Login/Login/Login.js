@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Helmet } from "react-helmet-async";
 import axios from "axios";
+import useToken from "../../../hooks/useToken";
 
 const Login = () => {
   const emailRef = useRef("");
@@ -24,6 +25,7 @@ const Login = () => {
 
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
+  const [token] = useToken(user);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,12 +33,6 @@ const Login = () => {
     const password = passwordRef.current.value;
 
     await signInWithEmailAndPassword(email, password);
-    const { data } = await axios.post(
-      "https://nameless-falls-64465.herokuapp.com/login",
-      { email }
-    );
-    localStorage.setItem("accessToken", data.accessToken);
-    navigate(from, { replace: true });
   };
 
   const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
@@ -45,8 +41,8 @@ const Login = () => {
     return <Loading></Loading>;
   }
 
-  if (user) {
-    // navigate(from, { replace: true });
+  if (token) {
+    navigate(from, { replace: true });
   }
 
   if (error) {
